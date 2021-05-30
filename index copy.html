@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="/src/Angular.js"></script>
+</head>
+<body>
+
+    <div ng-app="myApp" ng-controller="myController">
+        name : <input type="text" ng-disabled="person.age>10" ng-model="person.name">
+        <br/>
+        family : <input type="text" ng-model="person.family">
+        <br/>
+        age : <input type="number" ng-model="person.age">
+        <br/>
+        <span ng-bind="person.name"></span>
+        <br/>
+        my name is {{person.name +' '+ person.family}} and i have {{person.age}} years old
+        <br/>
+        my age is <span style="color: red;" ng-bind="person.age * 12 * 30.5"></span> days
+        <br/>
+        <br/>
+        <span ng-show="person.age==10 ">شما کودک هستی</span>
+        <span ng-show="person.age<40">شما جوان هستی</span>
+        <span ng-show="person.age>=40">شما میانسال هستی</span>
+        <br/>
+        <button ng-click="person.age = person.age + 1">add age</button>
+        <br/>
+        {{Fullname()}}
+        <br/>
+        <ul>
+            <li ng-repeat="n in nameArray">{{n}}</li>
+        </ul>
+
+        <br>
+        search by name: <input type="text" ng-model="filt.name">
+        search by family: <input type="text" ng-model="filt.family">
+        <br>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>name</th>
+                    <th>family</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="n in personArray | orderBy: '-name' | filter: filt " >
+                    <td>{{n.name}}</td>
+                    <td>{{n.family}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br>
+
+        <textarea id="maintext" name="text" cols="30" rows="10" ng-model="mainText" ng-change="setRedLine()" ng-disabled="mainText.length>100"></textarea>
+        <br>
+
+        remind char : {{mainText.length}}
+
+        <br>
+        <div style="border: 1px solid red; width: 302px;">
+            <div id="charLength" style="height: 5px; background-color: red;"></div>
+        </div>
+
+        <div ng-include=" 'test.html' "></div>
+
+
+
+    </div>
+
+    <script>
+        var app = angular.module("myApp" , []);
+        app.controller("myController" , function($scope){
+            $scope.name = 'abbas';
+            $scope.family = 'bassaki';
+            $scope.age = 30;
+            $scope.person = {
+                name:'mohammad',
+                family: 'bassaki',
+                age: 3,
+                nikename:'nafasool',
+            }
+            $scope.Fullname = ()=>{
+                return $scope.person.name + ' ' + $scope.person.family;
+            }
+            $scope.nameArray=['abbas','qasem','mahdi','ali','mohammad'];
+            $scope.personArray=[
+                {name:'abbas' , family:'bassaki'},
+                {name:'qasem' , family:'qasemi'},
+                {name:'mahdi' , family:'mohammade'},
+                {name:'ali' , family:'alavi'},
+                {name:'mohammad' , family:'mahdavi'},
+            ];
+
+            $scope.setRedLine = ()=>{
+                document.getElementById('charLength').style.width = $scope.mainText.length*3+"px";
+                if($scope.mainText.length > 100){
+                    document.getElementById('maintext').style.backgroundColor="red"
+                }
+            }
+
+        })
+    </script>
+    
+</body>
+</html>
